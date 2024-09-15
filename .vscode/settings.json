@@ -5,7 +5,12 @@
 		"**/.hg": true,
 		"**/CVS": true,
 		"**/.DS_Store": true,
-		"**/Thumbs.db": true
+		"**/Thumbs.db": true,
+		"frontend/web": true,
+		"frontend/.metadata": true
 	},
-	"hide-files.files": []
+	"hide-files.files": [
+		"frontend/web",
+		"frontend/.metadata"
+	]
 }
