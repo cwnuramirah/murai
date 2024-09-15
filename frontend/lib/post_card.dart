@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/theme.dart';
 
@@ -27,7 +25,10 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(StyledSize.md),
+      margin: const EdgeInsets.symmetric(
+        horizontal: StyledSize.md,
+        vertical: StyledSize.sm,
+      ),
       padding: const EdgeInsets.all(StyledSize.md),
       decoration: const BoxDecoration(
         color: StyledColor.white,
@@ -69,7 +70,7 @@ class _PostCardState extends State<PostCard> {
                 ),
 
                 // Body
-                widget.postContent.isNull
+                widget.postContent == null
                     ? const SizedBox.shrink()
                     : Text(
                         widget.postContent!,
