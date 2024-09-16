@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/post_model.dart';
 import 'package:frontend/theme.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({
     super.key,
-    required this.username,
-    required this.timestamp,
-    this.postContent,
-    required this.likeCount,
-    required this.replyCount,
+    required this.post,
   });
 
-  final String username;
-  final String timestamp;
-  final String? postContent;
-  final int likeCount;
-  final int replyCount;
+  final Post post;
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -52,33 +45,21 @@ class _PostCardState extends State<PostCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                //Header
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.username,
-                      style: StyledText.title.sm,
-                    ),
-                    Spacing.horizontal.sm,
-                    Text(
-                      widget.timestamp,
-                      style: const TextStyle(color: StyledColor.greyDark),
-                    ),
-                  ],
+                PostCardHeader(
+                  username: widget.post.username,
+                  timestamp: widget.post.timestamp,
                 ),
 
                 // Body
-                widget.postContent == null
+                widget.post.postContent == null
                     ? const SizedBox.shrink()
                     : Text(
-                        widget.postContent!,
+                        widget.post.postContent!,
                       ),
 
                 Spacing.vertical.sm,
 
-                //Footer
+                //PostCardFooter
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -86,7 +67,7 @@ class _PostCardState extends State<PostCard> {
                     PostActionButton(
                       action: 'like',
                       onTap: () {},
-                      count: widget.likeCount,
+                      count: widget.post.likeCount,
                       icon: Icons.favorite_border_rounded,
                     ),
 
@@ -96,7 +77,7 @@ class _PostCardState extends State<PostCard> {
                     PostActionButton(
                       action: 'reply',
                       onTap: () {},
-                      count: widget.replyCount,
+                      count: widget.post.replyCount,
                       icon: Icons.comment_outlined,
                     ),
                   ],
@@ -106,6 +87,36 @@ class _PostCardState extends State<PostCard> {
           )
         ],
       ),
+    );
+  }
+}
+
+class PostCardHeader extends StatelessWidget {
+  const PostCardHeader({
+    super.key,
+    required this.username,
+    required this.timestamp,
+  });
+
+  final String username;
+  final String timestamp;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          username,
+          style: StyledText.title.sm,
+        ),
+        Spacing.horizontal.sm,
+        Text(
+          timestamp,
+          style: const TextStyle(color: StyledColor.greyDark),
+        ),
+      ],
     );
   }
 }

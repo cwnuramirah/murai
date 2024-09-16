@@ -60,25 +60,25 @@ class PostList extends StatelessWidget {
     return SingleChildScrollView(
       child: BlocBuilder<PostBloc, PostState>(
         builder: (context, state) {
-          if (state is PostInitial) {
-            return const Center(child: Text('Loading post...'));
-          }
-          if (state is PostLoaded) {
-            return Column(
-              verticalDirection: VerticalDirection.up,
-              children: [
-                for (int i = 0; i < state.allPost.length; i++)
-                  PostCard(
-                    username: state.allPost[i].username,
-                    timestamp: state.allPost[i].timestamp,
-                    postContent: state.allPost[i].postContent,
-                    likeCount: state.allPost[i].likeCount,
-                    replyCount: state.allPost[i].replyCount,
-                  )
-              ],
-            );
-          } else {
-            return const Center(child: Text('Something went wrong :('));
+          switch (state) {
+            case PostInitial():
+              return const Center(child: Text('No post'));
+            case PostLoading():
+              return const Center(child: Text('Loading post...'));
+            case PostLoaded():
+              if (state.allPost.isNotEmpty) {
+                return Column(
+                  verticalDirection: VerticalDirection.up,
+                  children: [
+                    for (int i = 0; i < state.allPost.length; i++)
+                      PostCard(post: state.allPost[i])
+                  ],
+                );
+              } else {
+                return const Center(child: Text('No post'));
+              }
+            case PostError():
+              return const Center(child: Text('Something went wrong :('));
           }
         },
       ),
