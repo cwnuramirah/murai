@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/ui/pages/stream/new_post_page.dart';
+import 'package:frontend/ui/pages/new_post/new_post_page.dart';
 import 'package:frontend/bloc/post_bloc.dart';
 import 'package:frontend/ui/pages/stream/post_card.dart';
 import 'package:frontend/theme.dart';
