@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/ui/pages/stream/new_post_page.dart';
 import 'package:frontend/bloc/post_bloc.dart';
-import 'package:frontend/post_card.dart';
+import 'package:frontend/ui/pages/stream/post_card.dart';
 import 'package:frontend/theme.dart';
 
 class StreamPage extends StatefulWidget {
@@ -32,6 +33,19 @@ class _StreamPageState extends State<StreamPage> {
         elevation: 0,
       ),
       body: const PostList(),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: kBottomNavigationBarHeight),
+        child: FloatingActionButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NewPostPage(),
+            ),
+          ),
+          backgroundColor: StyledColor.blue,
+          child: const Icon(Icons.add_rounded),
+        ),
+      ),
     );
   }
 }

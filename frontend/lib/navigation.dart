@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/message_page.dart';
-import 'package:frontend/people_page.dart';
-import 'package:frontend/stream_page.dart';
+import 'package:frontend/ui/pages/message_page.dart';
+import 'package:frontend/ui/pages/people_page.dart';
+import 'package:frontend/ui/pages/stream/stream_page.dart';
 import 'package:frontend/theme.dart';
 
 class Navigation extends StatefulWidget {
@@ -24,7 +24,7 @@ class _NavigationState extends State<Navigation>
       "icon": Icons.people,
     },
     {
-      "label": "Chat",
+      "label": "Message",
       "icon": Icons.chat_bubble_rounded,
     },
   ];
