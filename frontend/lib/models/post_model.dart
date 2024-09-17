@@ -1,12 +1,11 @@
-
 class Post {
   final String username;
   final String userId;
   final String timestamp;
   final String postId;
   final String? postContent;
-  final int likeCount;
   final int replyCount;
+  final Set<String> likedBy;
 
   const Post({
     required this.username,
@@ -14,8 +13,8 @@ class Post {
     required this.timestamp,
     required this.postId,
     this.postContent,
-    required this.likeCount,
     required this.replyCount,
+    required this.likedBy,
   });
 
   List<Object?> get props => [
@@ -24,28 +23,55 @@ class Post {
         timestamp,
         postId,
         postContent,
-        likeCount,
         replyCount,
+        likedBy,
       ];
 
-  static List<Post> allPost = [
-    const Post(
-      username: 'dian.nasar',
-      userId: 'dnn1309x',
-      timestamp: '2024-09-14T13:24:55 +08:00',
-      postId: '156546',
-      postContent: "Good evening Murai! I made pomegranate mocktail with few shots of homemade hibiscus syrup tonight :D",
-      likeCount: 23,
-      replyCount: 4,
-    ),
-    const Post(
-      username: 'eva.elfie',
-      userId: 'evv1257w',
-      timestamp: '2024-09-14T15:54:12 +08:00',
-      postContent: "Mood right now: craving for ebi gyoza dumpling with mentai sauce >.<",
-      postId: '156548',
-      likeCount: 13,
-      replyCount: 2,
-    ),
-  ];
+  Post copyWith({
+    String? username,
+    String? userId,
+    String? timestamp,
+    String? postId,
+    String? postContent,
+    int? replyCount,
+    Set<String>? likedBy,
+  }) {
+    return Post(
+      username: username ?? this.username,
+      userId: userId ?? this.userId,
+      timestamp: timestamp ?? this.timestamp,
+      postId: postId ?? this.postId,
+      postContent: postContent ?? this.postContent,
+      replyCount: replyCount ?? this.replyCount,
+      likedBy: likedBy ?? {},
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'username': username,
+      'userId': userId,
+      'timestamp': timestamp,
+      'postId': postId,
+      'postContent': postContent,
+      'replyCount': replyCount,
+    };
+  }
+
+  factory Post.fromMap(Map<String, dynamic> map) {
+    return Post(
+      username: map['username'] as String,
+      userId: map['userId'] as String,
+      timestamp: map['timestamp'] as String,
+      postId: map['postId'] as String,
+      postContent:
+          map['postContent'] != null ? map['postContent'] as String : null,
+      replyCount: map['replyCount'] as int,
+      likedBy: map['likedBy'] as Set<String>,
+    );
+  }
+
+  // String toJson() => json.encode(toMap());
+
+  // factory Post.fromJson(String source) => Post.fromMap(json.decode(source) as Map<String, dynamic>);
 }

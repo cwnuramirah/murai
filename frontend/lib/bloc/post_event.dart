@@ -17,3 +17,13 @@ class AddPost extends PostEvent {
   @override
   List<Object> get props => [post];
 }
+
+class UpdateLike extends PostEvent {
+  final String postId;
+  final String userId;
+
+  const UpdateLike({
+    required this.postId,
+    required this.userId,
+  });
+}

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/post_model.dart';
 import 'package:frontend/theme.dart';
+import 'package:frontend/ui/pages/stream/interaction_bar.dart';
+import 'package:frontend/ui/pages/stream/post_card_header.dart';
 
-class PostCard extends StatefulWidget {
+class PostCard extends StatelessWidget {
   const PostCard({
     super.key,
     required this.post,
@@ -10,11 +12,6 @@ class PostCard extends StatefulWidget {
 
   final Post post;
 
-  @override
-  State<PostCard> createState() => _PostCardState();
-}
-
-class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,110 +43,24 @@ class _PostCardState extends State<PostCard> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 PostCardHeader(
-                  username: widget.post.username,
-                  timestamp: widget.post.timestamp,
+                  username: post.username,
+                  timestamp: post.timestamp,
                 ),
 
                 // Body
-                widget.post.postContent == null
+                post.postContent == null
                     ? const SizedBox.shrink()
                     : Text(
-                        widget.post.postContent!,
+                        post.postContent!,
                       ),
 
                 Spacing.vertical.sm,
 
                 //PostCardFooter
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    //Like
-                    PostActionButton(
-                      action: 'like',
-                      onTap: () {},
-                      count: widget.post.likeCount,
-                      icon: Icons.favorite_border_rounded,
-                    ),
-
-                    Spacing.horizontal.md,
-
-                    // Reply
-                    PostActionButton(
-                      action: 'reply',
-                      onTap: () {},
-                      count: widget.post.replyCount,
-                      icon: Icons.comment_outlined,
-                    ),
-                  ],
-                )
+                InteractionBar(post: post),
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-}
-
-class PostCardHeader extends StatelessWidget {
-  const PostCardHeader({
-    super.key,
-    required this.username,
-    required this.timestamp,
-  });
-
-  final String username;
-  final String timestamp;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          username,
-          style: StyledText.title.sm,
-        ),
-        Spacing.horizontal.sm,
-        Text(
-          timestamp,
-          style: const TextStyle(color: StyledColor.greyDark),
-        ),
-      ],
-    );
-  }
-}
-
-class PostActionButton extends StatelessWidget {
-  const PostActionButton({
-    super.key,
-    required this.action,
-    this.onTap,
-    required this.icon,
-    required this.count,
-  });
-
-  //TODO: action should be receive something like this: ['reply','replies']
-  //so can render like this: count > 1 ? action[1] : action[0]
-  final String action;
-  final Function()? onTap;
-  final IconData icon;
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: StyledSize.md,
-          ),
-          Spacing.horizontal.xs,
-          Text('$count')
         ],
       ),
     );

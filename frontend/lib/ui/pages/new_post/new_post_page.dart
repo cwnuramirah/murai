@@ -29,9 +29,9 @@ class _NewPostPageState extends State<NewPostPage> {
         username: 'dian.nasar',
         userId: 'dnn1309x',
         timestamp: DateTime.now().toString(),
-        postId:  DateTime.now().toString(),
-        likeCount: 0,
+        postId: DateTime.now().toString(),
         replyCount: 0,
+        likedBy: {},
       );
     });
 
@@ -66,7 +66,8 @@ class _NewPostPageState extends State<NewPostPage> {
               onPressed: contentIsNotEmpty || mediaIsNotEmpty
                   ? () {
                       setState(() {
-                        newPost = newPost.copyWith(postContent: _contentController.text);
+                        newPost = newPost.copyWith(
+                            postContent: _contentController.text);
                       });
                       context.read<PostBloc>().add(AddPost(newPost));
                       Navigator.pop(context);
@@ -185,4 +186,3 @@ class _NewPostPageState extends State<NewPostPage> {
     );
   }
 }
-

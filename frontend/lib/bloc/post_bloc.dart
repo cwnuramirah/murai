@@ -21,28 +21,44 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         );
       }
     });
+    on<UpdateLike>((event, emit) async {
+      if (state is PostLoaded) {
+        final updatedPost = (state as PostLoaded).allPost.map((post) {
+          if (post.postId == event.postId) {
+            final isLiked = post.likedBy.contains(event.userId);
+
+            return post.copyWith(
+              likedBy: isLiked
+                  ? (Set.from(post.likedBy)..remove(event.userId))
+                  : (Set.from(post.likedBy)..add(event.userId)),
+            );
+          }
+          return post;
+        }).toList();
+
+        emit(PostLoaded(allPost: updatedPost));
+      }
+    });
   }
 }
 
 List<Post> _initList = [
-  const Post(
-    username: 'dian.nasar',
-    userId: 'dnn1309x',
-    timestamp: '2024-09-14T13:24:55 +08:00',
-    postId: '156546',
-    postContent:
-        "Good evening Murai! I made pomegranate mocktail with few shots of homemade hibiscus syrup tonight :D",
-    likeCount: 23,
-    replyCount: 4,
-  ),
-  const Post(
-    username: 'eva.elfie',
-    userId: 'evv1257w',
-    timestamp: '2024-09-14T15:54:12 +08:00',
-    postContent:
-        "Mood right now: craving for ebi gyoza dumpling with mentai sauce >.<",
-    postId: '156548',
-    likeCount: 13,
-    replyCount: 2,
-  ),
+  // const Post(
+  //   username: 'dian.nasar',
+  //   userId: 'dnn1309x',
+  //   timestamp: '2024-09-14T13:24:55 +08:00',
+  //   postId: '156546',
+  //   postContent:
+  //       "Good evening Murai! I made pomegranate mocktail with few shots of homemade hibiscus syrup tonight :D",
+  //   replyCount: 4,
+  // ),
+  // const Post(
+  //   username: 'eva.elfie',
+  //   userId: 'evv1257w',
+  //   timestamp: '2024-09-14T15:54:12 +08:00',
+  //   postContent:
+  //       "Mood right now: craving for ebi gyoza dumpling with mentai sauce >.<",
+  //   postId: '156548',
+  //   replyCount: 2,
+  // ),
 ];
