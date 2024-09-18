@@ -24,7 +24,7 @@ abstract class StyledColor {
   const StyledColor();
 
   // Color(0xFF<HEX>)
-  static const Color white = Color(0xFFFFFFFF);
+  static const Color white = Color(0xFFFAFAFA);
   static const Color greyLight = Color(0xFFF2F2F2);
   static const Color grey = Color(0xFFD9D9D9);
   static const Color greyDark = Color(0xFF7F7F7F);

@@ -25,7 +25,7 @@ class _PostCardState extends State<PostCard> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const ViewPostPage(),
+          builder: (context) => ViewPostPage(post: widget.post),
         ),
       ),
       child: Container(
@@ -38,36 +38,33 @@ class _PostCardState extends State<PostCard> {
           color: StyledColor.white,
           borderRadius: StyledBorder.rounded,
         ),
-        child: Hero(
-          tag: 'postHero',
-          child: ContentWrapper(
-            leading: Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: StyledColor.blue,
-                borderRadius: BorderRadius.circular(50),
-              ),
+        child: ContentWrapper(
+          leading: Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: StyledColor.blue,
+              borderRadius: BorderRadius.circular(50),
             ),
-            header: PostCardHeader(
-              username: widget.post.username,
-              timestamp: widget.post.timestamp,
-            ),
-            body: [
-              widget.post.postContent == null
-                  ? const SizedBox.shrink()
-                  : Text(
-                      widget.post.postContent!,
-                    ),
-              // TODO: display media/poll
-              // widget.post.postContent == null
-              //     ? const SizedBox.shrink()
-              //     : Text(
-              //         widget.post.postContent!,
-              //       ),
-            ],
-            footer: InteractionBar(post: widget.post),
           ),
+          header: PostCardHeader(
+            username: widget.post.username,
+            timestamp: widget.post.timestamp,
+          ),
+          body: [
+            widget.post.postContent == null
+                ? const SizedBox.shrink()
+                : Text(
+                    widget.post.postContent!,
+                  ),
+            // TODO: display media/poll
+            // widget.post.postContent == null
+            //     ? const SizedBox.shrink()
+            //     : Text(
+            //         widget.post.postContent!,
+            //       ),
+          ],
+          footer: InteractionBar(post: widget.post),
         ),
       ),
     );
