@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/comment_model.dart';
 import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/content_wrapper.dart';
+import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/ui/pages/view_post/view_reply.dart';
 
 class CommentTile extends StatefulWidget {
@@ -32,14 +33,7 @@ class _CommentTileState extends State<CommentTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: StyledSize.sm),
       child: ContentWrapper(
-        leading: Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            color: StyledColor.blue,
-            borderRadius: BorderRadius.circular(50),
-          ),
-        ),
+        leading: const UserAvatar(),
         header: Row(
           children: [
             Text(

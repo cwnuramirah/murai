@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/post_model.dart';
 import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/content_wrapper.dart';
+import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/ui/pages/view_post/comment_list.dart';
 import 'package:frontend/ui/pages/stream/post_card_header.dart';
 
@@ -82,14 +83,7 @@ class MainPost extends StatelessWidget {
           horizontal: StyledSize.md,
         ),
         child: ContentWrapper(
-          leading: Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              color: StyledColor.blue,
-              borderRadius: BorderRadius.circular(50),
-            ),
-          ),
+          leading: const UserAvatar(),
           header: PostCardHeader(
             username: post.username,
             timestamp: post.timestamp,
