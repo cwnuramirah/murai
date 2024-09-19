@@ -5,6 +5,7 @@ import 'package:frontend/ui/components/content_wrapper.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/ui/pages/view_post/comment_list.dart';
 import 'package:frontend/ui/pages/stream/post_card_header.dart';
+import 'package:frontend/ui/pages/view_post/new_comment.dart';
 
 class ViewPostPage extends StatefulWidget {
   const ViewPostPage({super.key, required this.post});
@@ -43,7 +44,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${widget.post.replyCount} ${widget.post.replyCount < 2 ?  'reply' : 'replies'}',
+                    '${widget.post.replyCount} ${widget.post.replyCount < 2 ? 'reply' : 'replies'}',
                     style: StyledText.title.sm,
                   ),
                   const Icon(Icons.favorite_outline_rounded),
@@ -61,10 +62,10 @@ class _ViewPostPageState extends State<ViewPostPage> {
           CommentList(authorId: widget.post.username),
         ],
       ),
+      bottomSheet: NewComment(postId: widget.post.postId),
     );
   }
 }
-
 
 class MainPost extends StatelessWidget {
   const MainPost({
