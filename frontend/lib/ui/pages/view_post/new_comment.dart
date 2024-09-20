@@ -17,6 +17,7 @@ class NewComment extends StatefulWidget {
 class _NewCommentState extends State<NewComment> {
   final TextEditingController _commentController = TextEditingController();
   final FocusNode _commentFocusNode = FocusNode();
+  bool enableTapRegion = false;
 
   @override
   void initState() {
@@ -29,6 +30,26 @@ class _NewCommentState extends State<NewComment> {
         () {}); // Empty on purpose. This triggers a rebuild when the focus changes
   }
 
+  void _focusComment() {
+    if (!enableTapRegion) {
+      // Start detecting any outside tap
+      setState(() {
+        enableTapRegion = true;
+      });
+    }
+  }
+
+  void _unfocusComment() {
+    if (_commentFocusNode.hasFocus) {
+      _commentFocusNode.unfocus();
+    }
+
+    // Stop tracking tap if comment unfocused
+    setState(() {
+      enableTapRegion = false;
+    });
+  }
+
   @override
   void dispose() {
     _commentController.dispose();
@@ -39,87 +60,83 @@ class _NewCommentState extends State<NewComment> {
 
   @override
   Widget build(BuildContext context) {
-    const inputDecoration = InputDecoration(
-      isDense: true,
-      contentPadding: EdgeInsets.symmetric(
-          vertical: StyledSize.sm, horizontal: StyledSize.md),
-      filled: true,
-      fillColor: StyledColor.greyLight,
-      border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(StyledSize.lg))),
-      focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(StyledSize.lg))),
-    );
-
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(color: StyledColor.grey),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: StyledSize.md,
-        vertical: StyledSize.sm,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: StyledSize.xs),
-                child: UserAvatar(),
-              ),
-              Spacing.horizontal.sm,
-              Expanded(
-                child: TextField(
-                  controller: _commentController,
-                  focusNode: _commentFocusNode,
-                  onTap: () {
-                    _commentFocusNode.requestFocus();
-                  },
-                  onTapOutside: (event) {
-                    _commentFocusNode.unfocus();
-                  },
-                  autofocus: false,
-                  maxLength: 200,
-                  decoration: inputDecoration.copyWith(hintText: 'Add comment...'),
-                  maxLines: null,
-                ),
-              ),
-            ],
+    return TapRegion(
+      enabled: enableTapRegion,
+      onTapOutside: (event) => _unfocusComment(),
+      child: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(color: StyledColor.grey),
           ),
-          Spacing.vertical.sm,
-          _commentFocusNode.hasPrimaryFocus ||
-                  _commentController.text.isNotEmpty
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // const TextField(),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: StyledSize.sm, horizontal: StyledSize.md),
-                        decoration: const BoxDecoration(
-                          color: StyledColor.blue,
-                          borderRadius: StyledBorder.rounded,
-                        ),
-                        child: const Icon(
-                          Icons.arrow_outward_rounded,
-                          size: 16.0,
-                          color: StyledColor.white,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: StyledSize.md,
+          vertical: StyledSize.sm,
+        ),
+        constraints: StyledTextField.bottomTextFieldHeightConstraint,
+        child: Column(
+          crossAxisAlignment: _commentFocusNode.hasPrimaryFocus ? CrossAxisAlignment.start: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              fit: FlexFit.loose,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: StyledSize.xs),
+                    child: UserAvatar(),
+                  ),
+                  Spacing.horizontal.sm,
+                  Expanded(
+                    child: TextField(
+                      controller: _commentController,
+                      focusNode: _commentFocusNode,
+                      autofocus: false,
+                      onTap: () => _focusComment(),
+                      maxLength: 200,
+                      decoration: StyledTextField.denseGreyInput.copyWith(
+                        hintText: 'Add comment...',
+                        counter: _commentFocusNode.hasPrimaryFocus
+                            ? null
+                            : const SizedBox.shrink(),
+                      ),
+                      maxLines: _commentFocusNode.hasPrimaryFocus ? null : 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            _commentFocusNode.hasPrimaryFocus ? Spacing.vertical.sm : const SizedBox.shrink(),
+            _commentFocusNode.hasPrimaryFocus
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // _unfocusComment();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: StyledSize.sm,
+                              horizontal: StyledSize.md),
+                          decoration: const BoxDecoration(
+                            color: StyledColor.blue,
+                            borderRadius: StyledBorder.rounded,
+                          ),
+                          child: const Icon(
+                            Icons.arrow_outward_rounded,
+                            size: 16.0,
+                            color: StyledColor.white,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )
-              : const SizedBox.shrink()
-        ],
+                    ],
+                  )
+                : const SizedBox.shrink()
+          ],
+        ),
       ),
     );
   }

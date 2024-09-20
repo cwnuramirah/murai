@@ -145,3 +145,25 @@ abstract class StyledBorder {
     topRight: Radius.circular(10.0),
   );
 }
+
+// TODO: need cleanup
+abstract class StyledTextField {
+  static const InputDecoration denseGreyInput = InputDecoration(
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(
+        vertical: StyledSize.sm, horizontal: StyledSize.md),
+    filled: true,
+    fillColor: StyledColor.greyLight,
+    border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(Radius.circular(StyledSize.lg))),
+    focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(Radius.circular(StyledSize.lg))),
+  );
+
+  static const BoxConstraints bottomTextFieldHeightConstraint = BoxConstraints(
+    minHeight: kToolbarHeight,
+    maxHeight: kToolbarHeight * 3,
+  );
+}

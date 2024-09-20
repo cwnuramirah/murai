@@ -60,6 +60,10 @@ class _ViewPostPageState extends State<ViewPostPage> {
           ),
           // TODO: optimize author parameter
           CommentList(authorId: widget.post.username),
+          // TODO: refactor height below bottomsheet
+          SliverToBoxAdapter(
+            child: SizedBox(height: StyledTextField.bottomTextFieldHeightConstraint.minHeight),
+          ),
         ],
       ),
       bottomSheet: NewComment(postId: widget.post.postId),
