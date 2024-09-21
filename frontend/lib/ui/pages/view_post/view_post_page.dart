@@ -31,11 +31,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
           MainPost(post: widget.post),
           SliverAppBar(
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: StyledColor.grey),
-                ),
-              ),
+              decoration: const BoxDecoration(border: StyledBorder.greyTop),
               padding: const EdgeInsets.symmetric(
                 vertical: StyledSize.md,
                 horizontal: StyledSize.lg,
@@ -93,10 +89,9 @@ class MainPost extends StatelessWidget {
           leading: const UserAvatar(),
           header: SizedBox(
             height: StyledSize.lg,
-            child: Text(
-              post.username,
-              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0)
-            ),
+            child: Text(post.username,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w700, fontSize: 16.0)),
           ),
           body: [
             post.postContent == null

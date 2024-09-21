@@ -17,6 +17,7 @@ class NoSplashButton extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
         foregroundColor: textColor ?? StyledColor.blue,
+        visualDensity: VisualDensity.compact
       ).copyWith(
         overlayColor:
             MaterialStateColor.resolveWith((states) => Colors.transparent),

@@ -48,44 +48,49 @@ class _ViewReplyState extends State<ViewReply> {
                 color: StyledColor.grey,
               ),
             ),
-            Spacing.horizontal.sm,
             _expandReplies
                 ? GestureDetector(
                     onTap: () => _setExpandReplies(),
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Hide',
-                          style: TextStyle(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: StyledSize.sm),
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Hide',
+                            style: TextStyle(
+                              color: StyledColor.greyDark,
+                            ),
+                          ),
+                          Spacing.horizontal.xs,
+                          const Icon(
+                            Icons.keyboard_arrow_up_rounded,
+                            size: 16.0,
                             color: StyledColor.greyDark,
                           ),
-                        ),
-                        Spacing.horizontal.xs,
-                        const Icon(
-                          Icons.keyboard_arrow_up_rounded,
-                          size: 16.0,
-                          color: StyledColor.greyDark,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
                 : GestureDetector(
                     onTap: () => _setExpandReplies(),
-                    child: Row(
-                      children: [
-                        Text(
-                          'View ${widget.replies.length < 2 ? 'reply' : '${widget.replies.length} replies'}',
-                          style: const TextStyle(
+                    child: Padding(
+                      padding:  const EdgeInsets.symmetric(horizontal: StyledSize.sm),
+                      child: Row(
+                        children: [
+                          Text(
+                            'View ${widget.replies.length < 2 ? 'reply' : '${widget.replies.length} replies'}',
+                            style: const TextStyle(
+                              color: StyledColor.greyDark,
+                            ),
+                          ),
+                          Spacing.horizontal.xs,
+                          const Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            size: 16.0,
                             color: StyledColor.greyDark,
                           ),
-                        ),
-                        Spacing.horizontal.xs,
-                        const Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          size: 16.0,
-                          color: StyledColor.greyDark,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
           ],

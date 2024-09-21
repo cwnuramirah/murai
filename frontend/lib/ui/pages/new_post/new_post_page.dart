@@ -78,11 +78,12 @@ class _NewPostPageState extends State<NewPostPage> {
         foregroundColor: StyledColor.black,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(StyledSize.md),
-        child: Column(
-          children: [
-            Expanded(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(StyledSize.md),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +112,11 @@ class _NewPostPageState extends State<NewPostPage> {
                 ],
               ),
             ),
-            Row(
+          ),
+          Container(
+            decoration: const BoxDecoration(border: StyledBorder.greyTop),
+            padding: const EdgeInsets.symmetric(vertical: StyledSize.sm, horizontal: StyledSize.md,),
+            child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
                 NoSplashButton(
@@ -122,7 +127,7 @@ class _NewPostPageState extends State<NewPostPage> {
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
                     child: Text('|',
-                        style: TextStyle(color: StyledColor.greyDark))),
+                        style: TextStyle(color: StyledColor.grey))),
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},
@@ -131,7 +136,7 @@ class _NewPostPageState extends State<NewPostPage> {
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
                     child: Text('|',
-                        style: TextStyle(color: StyledColor.greyDark))),
+                        style: TextStyle(color: StyledColor.grey))),
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},
@@ -139,8 +144,8 @@ class _NewPostPageState extends State<NewPostPage> {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

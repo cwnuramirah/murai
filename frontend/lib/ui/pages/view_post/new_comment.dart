@@ -65,9 +65,7 @@ class _NewCommentState extends State<NewComment> {
       onTapOutside: (event) => _unfocusComment(),
       child: Container(
         decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(color: StyledColor.grey),
-          ),
+          border: StyledBorder.greyTop,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: StyledSize.md,
@@ -75,7 +73,9 @@ class _NewCommentState extends State<NewComment> {
         ),
         constraints: StyledTextField.bottomTextFieldHeightConstraint,
         child: Column(
-          crossAxisAlignment: _commentFocusNode.hasPrimaryFocus ? CrossAxisAlignment.start: CrossAxisAlignment.center,
+          crossAxisAlignment: _commentFocusNode.hasPrimaryFocus
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
@@ -108,7 +108,9 @@ class _NewCommentState extends State<NewComment> {
                 ],
               ),
             ),
-            _commentFocusNode.hasPrimaryFocus ? Spacing.vertical.sm : const SizedBox.shrink(),
+            _commentFocusNode.hasPrimaryFocus
+                ? Spacing.vertical.sm
+                : const SizedBox.shrink(),
             _commentFocusNode.hasPrimaryFocus
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.end,
