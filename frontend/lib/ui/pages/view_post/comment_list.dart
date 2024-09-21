@@ -8,14 +8,14 @@ List<Comment> comments = [
     userId: 'pingu',
     commentId: '5632',
     content: 'mocktail is a need~',
-    timestamp: '1d',
+    timestamp: '2024-09-19T11:20:22.060068Z',
     likedBy: {'dian.nasar'},
   ),
   Comment(
     userId: 'eva.elfie',
     commentId: '25345',
     content: 'omg can i have the recipe?',
-    timestamp: '22h',
+    timestamp: '2024-09-10T21:09:22.060068Z',
     likedBy: {
       'sharil.sirhan',
       'dian.nasar',
@@ -26,7 +26,7 @@ List<Comment> comments = [
         userId: 'pingu',
         commentId: '16542',
         content: 'Me too',
-        timestamp: '22h',
+        timestamp: '2024-09-10T21:09:22.060068Z',
         likedBy: {},
         level: 1,
       ),
@@ -35,7 +35,7 @@ List<Comment> comments = [
         commentId: '78325',
         content:
             'Sure! I will share my complete recipe with the video this night :)',
-        timestamp: '21h',
+        timestamp: '2024-09-10T21:09:22.060068Z',
         likedBy: {'pingu', 'eva.elfie'},
         level: 1,
       ),
@@ -45,7 +45,7 @@ List<Comment> comments = [
     userId: 'syaril.sirhan',
     commentId: '25454',
     content: 'I guess I will buy some pomegranates tomorrow',
-    timestamp: DateTime.now().toIso8601String(),
+    timestamp: '2024-09-10T21:09:22.060068Z',
     likedBy: {
       'dian.nasar',
       'talha.taufiq',
@@ -57,7 +57,7 @@ List<Comment> comments = [
         userId: 'syabil.sirhan',
         commentId: '25455',
         content: 'can you buy some for me? I will pay you back hehe :P',
-        timestamp: DateTime.now().toIso8601String(),
+        timestamp: '2024-09-10T21:09:22.060068Z',
         likedBy: {
           'talha.taufiq',
           'sharil.sirhan',

@@ -4,8 +4,8 @@ import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/content_wrapper.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/ui/pages/view_post/comment_list.dart';
-import 'package:frontend/ui/pages/stream/post_card_header.dart';
 import 'package:frontend/ui/pages/view_post/new_comment.dart';
+import 'package:frontend/utils/timestamp.dart';
 
 class ViewPostPage extends StatefulWidget {
   const ViewPostPage({super.key, required this.post});
@@ -62,7 +62,9 @@ class _ViewPostPageState extends State<ViewPostPage> {
           CommentList(authorId: widget.post.username),
           // TODO: refactor height below bottomsheet
           SliverToBoxAdapter(
-            child: SizedBox(height: StyledTextField.bottomTextFieldHeightConstraint.minHeight),
+            child: SizedBox(
+                height:
+                    StyledTextField.bottomTextFieldHeightConstraint.minHeight),
           ),
         ],
       ),
@@ -89,12 +91,14 @@ class MainPost extends StatelessWidget {
         ),
         child: ContentWrapper(
           leading: const UserAvatar(),
-          header: PostCardHeader(
-            username: post.username,
-            timestamp: post.timestamp,
+          header: SizedBox(
+            height: StyledSize.lg,
+            child: Text(
+              post.username,
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0)
+            ),
           ),
           body: [
-            Spacing.vertical.xs,
             post.postContent == null
                 ? const SizedBox.shrink()
                 : Text(
@@ -107,6 +111,10 @@ class MainPost extends StatelessWidget {
             //     : Text(
             //         post.postContent!,
             //       ),
+            Text(
+              Timestamp.fullTime12H(post.timestamp),
+              style: const TextStyle(color: StyledColor.greyDark),
+            ),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme.dart';
+import 'package:frontend/utils/timestamp.dart';
 
 class PostCardHeader extends StatelessWidget {
   const PostCardHeader({
@@ -23,7 +24,7 @@ class PostCardHeader extends StatelessWidget {
         ),
         Spacing.horizontal.sm,
         Text(
-          timestamp,
+          Timestamp.timeAgo(timestamp),
           style: const TextStyle(color: StyledColor.greyDark),
         ),
       ],

@@ -4,6 +4,7 @@ import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/content_wrapper.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/ui/pages/view_post/view_reply.dart';
+import 'package:frontend/utils/timestamp.dart';
 
 class CommentTile extends StatefulWidget {
   const CommentTile({
@@ -49,13 +50,10 @@ class _CommentTileState extends State<CommentTile> {
           Text(widget.comment.content),
           Row(
             children: [
-              const SizedBox(
-                width: StyledSize.lg,
-                child: Text(
-                  '1d',
-                  style: TextStyle(
-                    color: StyledColor.greyDark,
-                  ),
+              Text(
+                Timestamp.timeAgo(widget.comment.timestamp),
+                style: const TextStyle(
+                  color: StyledColor.greyDark,
                 ),
               ),
               Spacing.horizontal.md,

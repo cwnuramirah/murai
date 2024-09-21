@@ -18,23 +18,10 @@ class _NewPostPageState extends State<NewPostPage> {
   final _contentController = TextEditingController();
   bool contentIsNotEmpty = false;
   bool mediaIsNotEmpty = false;
-  late Post newPost;
 
   @override
   void initState() {
     super.initState();
-
-    setState(() {
-      newPost = Post(
-        username: 'dian.nasar',
-        userId: 'dnn1309x',
-        timestamp: DateTime.now().toString(),
-        postId: DateTime.now().toString(),
-        replyCount: 0,
-        likedBy: {},
-      );
-    });
-
     _contentController.addListener(_setContentIsNotEmpty);
   }
 
@@ -65,11 +52,15 @@ class _NewPostPageState extends State<NewPostPage> {
             child: TextButton(
               onPressed: contentIsNotEmpty || mediaIsNotEmpty
                   ? () {
-                      setState(() {
-                        newPost = newPost.copyWith(
-                            postContent: _contentController.text);
-                      });
-                      context.read<PostBloc>().add(AddPost(newPost));
+                      context.read<PostBloc>().add(AddPost(Post(
+                            username: 'dian.nasar',
+                            userId: 'dnn1309x',
+                            timestamp: DateTime.now().toUtc().toIso8601String(),
+                            postContent: _contentController.text,
+                            replyCount: 0,
+                            likedBy: {},
+                            postId: DateTime.now().toUtc().toIso8601String(),
+                          )));
                       Navigator.pop(context);
                     }
                   : null,

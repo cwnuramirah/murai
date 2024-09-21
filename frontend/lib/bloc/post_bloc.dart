@@ -43,22 +43,24 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 }
 
 List<Post> _initList = [
-  // const Post(
-  //   username: 'dian.nasar',
-  //   userId: 'dnn1309x',
-  //   timestamp: '2024-09-14T13:24:55 +08:00',
-  //   postId: '156546',
-  //   postContent:
-  //       "Good evening Murai! I made pomegranate mocktail with few shots of homemade hibiscus syrup tonight :D",
-  //   replyCount: 4,
-  // ),
-  // const Post(
-  //   username: 'eva.elfie',
-  //   userId: 'evv1257w',
-  //   timestamp: '2024-09-14T15:54:12 +08:00',
-  //   postContent:
-  //       "Mood right now: craving for ebi gyoza dumpling with mentai sauce >.<",
-  //   postId: '156548',
-  //   replyCount: 2,
-  // ),
+  const Post(
+    username: 'dian.nasar',
+    userId: 'dnn1309x',
+    timestamp: '2024-09-10T20:09:22.060068Z',
+    postId: '156546',
+    postContent:
+        "I made pomegranate mocktail with few shots of homemade hibiscus syrup tonight :D",
+    replyCount: 4,
+    likedBy: {'dian.nasar', 'eva.elfie', 'talha.taufiq', 'sharil.sirhan', 'pingu', 'pucca'}
+  ),
+  const Post(
+    username: 'eva.elfie',
+    userId: 'evv1257w',
+    timestamp: '2024-09-19T11:09:22.060068Z',
+    postContent:
+        "Craving for ebi gyoza dumpling with mentai sauce >.<",
+    postId: '156548',
+    replyCount: 2,
+    likedBy: {'dian.nasar', 'eva.elfie', 'talha.taufiq'}
+  ),
 ];
