@@ -24,9 +24,9 @@ abstract class StyledColor {
   const StyledColor();
 
   // Color(0xFF<HEX>)
-  static const Color white = Color(0xFFFFFFFF);
+  static const Color white = Color(0xFFFAFAFA);
   static const Color greyLight = Color(0xFFF2F2F2);
-  static const Color grey = Color(0xFFD9D9D9);
+  static const Color grey = Color(0xFFBFBFBF);
   static const Color greyDark = Color(0xFF7F7F7F);
   static const Color black = Color(0xFF262626);
   static const Color blue = Color(0xFF59AAF2);
@@ -133,9 +133,13 @@ class HorizontalSpacing {
 abstract class StyledBorder {
   const StyledBorder();
 
-  static final BoxBorder allGrey = Border.all(
+  static final BoxBorder greyAll = Border.all(
     color: StyledColor.grey,
     width: 1,
+  );
+
+  static const Border greyTop = Border(
+    top: BorderSide(color: StyledColor.grey),
   );
 
   static const BorderRadius rounded = BorderRadius.all(Radius.circular(10.0));
@@ -143,5 +147,29 @@ abstract class StyledBorder {
   static const BorderRadius roundedTop = BorderRadius.only(
     topLeft: Radius.circular(10.0),
     topRight: Radius.circular(10.0),
+  );
+}
+
+// TODO: need cleanup
+abstract class StyledTextField {
+  static const InputDecoration denseGreyInput = InputDecoration(
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(
+      vertical: StyledSize.sm,
+      horizontal: StyledSize.md,
+    ),
+    filled: true,
+    fillColor: StyledColor.greyLight,
+    border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(Radius.circular(StyledSize.lg))),
+    focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(Radius.circular(StyledSize.lg))),
+  );
+
+  static const BoxConstraints bottomTextFieldHeightConstraint = BoxConstraints(
+    minHeight: kToolbarHeight,
+    maxHeight: kToolbarHeight * 3,
   );
 }

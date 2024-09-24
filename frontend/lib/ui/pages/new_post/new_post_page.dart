@@ -18,23 +18,10 @@ class _NewPostPageState extends State<NewPostPage> {
   final _contentController = TextEditingController();
   bool contentIsNotEmpty = false;
   bool mediaIsNotEmpty = false;
-  late Post newPost;
 
   @override
   void initState() {
     super.initState();
-
-    setState(() {
-      newPost = Post(
-        username: 'dian.nasar',
-        userId: 'dnn1309x',
-        timestamp: DateTime.now().toString(),
-        postId: DateTime.now().toString(),
-        replyCount: 0,
-        likedBy: {},
-      );
-    });
-
     _contentController.addListener(_setContentIsNotEmpty);
   }
 
@@ -65,11 +52,15 @@ class _NewPostPageState extends State<NewPostPage> {
             child: TextButton(
               onPressed: contentIsNotEmpty || mediaIsNotEmpty
                   ? () {
-                      setState(() {
-                        newPost = newPost.copyWith(
-                            postContent: _contentController.text);
-                      });
-                      context.read<PostBloc>().add(AddPost(newPost));
+                      context.read<PostBloc>().add(AddPost(Post(
+                            username: 'dian.nasar',
+                            userId: 'dnn1309x',
+                            timestamp: DateTime.now().toUtc().toIso8601String(),
+                            postContent: _contentController.text,
+                            replyCount: 0,
+                            likedBy: {},
+                            postId: DateTime.now().toUtc().toIso8601String(),
+                          )));
                       Navigator.pop(context);
                     }
                   : null,
@@ -87,11 +78,12 @@ class _NewPostPageState extends State<NewPostPage> {
         foregroundColor: StyledColor.black,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(StyledSize.md),
-        child: Column(
-          children: [
-            Expanded(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(StyledSize.md),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +112,11 @@ class _NewPostPageState extends State<NewPostPage> {
                 ],
               ),
             ),
-            Row(
+          ),
+          Container(
+            decoration: const BoxDecoration(border: StyledBorder.greyTop),
+            padding: const EdgeInsets.symmetric(vertical: StyledSize.sm, horizontal: StyledSize.md,),
+            child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
                 NoSplashButton(
@@ -131,7 +127,7 @@ class _NewPostPageState extends State<NewPostPage> {
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
                     child: Text('|',
-                        style: TextStyle(color: StyledColor.greyDark))),
+                        style: TextStyle(color: StyledColor.grey))),
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},
@@ -140,7 +136,7 @@ class _NewPostPageState extends State<NewPostPage> {
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
                     child: Text('|',
-                        style: TextStyle(color: StyledColor.greyDark))),
+                        style: TextStyle(color: StyledColor.grey))),
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},
@@ -148,8 +144,8 @@ class _NewPostPageState extends State<NewPostPage> {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
