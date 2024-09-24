@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/bloc/post_bloc.dart';
+import 'package:frontend/bloc/post/post_bloc.dart';
 import 'package:frontend/models/post_model.dart';
 import 'package:frontend/theme.dart';
 
@@ -21,8 +21,9 @@ class InteractionBar extends StatelessWidget {
         PostActionButton(
           action: const ['like', 'likes'],
           onTap: () {
-            context.read<PostBloc>().add(UpdateLike(
-                postId: post.postId, userId: '86424'));
+            context.read<PostBloc>().add(LikePost(
+                postId: post.postId));
+            // print(post.postId);
           },
           count: post.likedBy.length,
           icon: Icons.favorite_border_rounded,
@@ -34,7 +35,7 @@ class InteractionBar extends StatelessWidget {
         PostActionButton(
           action: const ['reply', 'replies'],
           onTap: () {},
-          count: post.replyCount,
+          count: post.comments.length,
           icon: Icons.comment_outlined,
         ),
       ],
@@ -59,7 +60,7 @@ class PostActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => onTap!(),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
