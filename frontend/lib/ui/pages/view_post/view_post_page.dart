@@ -34,7 +34,8 @@ class _ViewPostPageState extends State<ViewPostPage> {
           MainPost(post: widget.post),
           BlocBuilder<PostBloc, PostState>(
             buildWhen: (previous, current) {
-              if (current is PostUpdatedState && current.post.postId == widget.post.postId) {
+              if (current is PostUpdatedState &&
+                  current.post.postId == widget.post.postId) {
                 return true;
               }
               return false;
@@ -87,6 +88,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
           ),
           // TODO: optimize author parameter
           CommentList(
+            postId: widget.post.postId,
             authorId: widget.post.userId,
             commentList: widget.post.comments,
           ),

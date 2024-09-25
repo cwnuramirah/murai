@@ -17,26 +17,23 @@ class InteractionBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        //Like
+        SizedBox(
+          width: StyledSize.lg * 4,
+          child: PostActionButton(
+            action: const ['comment', 'comments'],
+            onTap: () {},
+            count: post.comments.length,
+            icon: Icons.comment_outlined,
+          ),
+        ),
+
         PostActionButton(
           action: const ['like', 'likes'],
           onTap: () {
-            context.read<PostBloc>().add(LikePost(
-                postId: post.postId));
-            // print(post.postId);
+            context.read<PostBloc>().add(LikePost(postId: post.postId));
           },
           count: post.likedBy.length,
           icon: Icons.favorite_border_rounded,
-        ),
-
-        Spacing.horizontal.md,
-
-        // Reply
-        PostActionButton(
-          action: const ['reply', 'replies'],
-          onTap: () {},
-          count: post.comments.length,
-          icon: Icons.comment_outlined,
         ),
       ],
     );

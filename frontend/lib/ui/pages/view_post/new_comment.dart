@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/bloc/post/post_bloc.dart';
 import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
 
@@ -117,7 +119,9 @@ class _NewCommentState extends State<NewComment> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // _unfocusComment();
+                          context.read<PostBloc>().add(AddComment(postId: widget.postId, comment: _commentController.text));
+                          _unfocusComment();
+                          _commentController.clear();
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:frontend/models/comment_model.dart';
 import 'package:frontend/models/post_model.dart';
 import 'package:frontend/repos/post_repository.dart';
 
@@ -45,31 +44,25 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   Future<void> _onLikePost(LikePost event, Emitter<PostState> emit) async {
-    const String userId = 'current.user';
+    // const String userId = 'current.user';
 
     if (state is PostsLoaded) {
       final currentState = state as PostsLoaded;
 
       try {
-        final post = currentState.posts
-            .firstWhere((post) => post.postId == event.postId);
-        final isLiked = post.likedBy.contains(userId);
-
-        // Toggle like/unlike
-        final updatedLikedBy = isLiked
-            ? (Set<String>.from(post.likedBy)..remove(userId))
-            : (Set<String>.from(post.likedBy)..add(userId));
-
-        final updatedPost = post.copyWith(likedBy: updatedLikedBy);
+        final updatedPost = await postRepository.likePost(event.postId);
 
         emit(PostUpdatedState(updatedPost));
-
         await postRepository.updatePost(updatedPost);
-        
+
         final updatedPosts = List<Post>.from(currentState.posts);
         final postIndex =
             updatedPosts.indexWhere((p) => p.postId == event.postId);
         updatedPosts[postIndex] = updatedPost;
+
+        final debug = await postRepository.getPostById(event.postId);
+        print(debug.likedBy.toString());
+
         emit(PostsLoaded(posts: updatedPosts));
       } catch (e) {
         emit(PostError(e.toString()));
@@ -82,20 +75,18 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       final currentState = state as PostsLoaded;
 
       try {
-        final post = currentState.posts
-            .firstWhere((post) => post.postId == event.postId);
-        final newComment =
+        final updatedPost =
             await postRepository.addComment(event.postId, event.comment);
 
-        final updatedComments = List<Comment>.from(post.comments)
-          ..add(newComment);
-        final updatedPost = post.copyWith(comments: updatedComments);
-
-        // Emit the updated post in a PostUpdatedState
         emit(PostUpdatedState(updatedPost));
-
-        // Update the repository if needed
         await postRepository.updatePost(updatedPost);
+
+        final updatedPosts = List<Post>.from(currentState.posts);
+        final postIndex =
+            updatedPosts.indexWhere((p) => p.postId == event.postId);
+        updatedPosts[postIndex] = updatedPost;
+
+        emit(PostsLoaded(posts: updatedPosts));
       } catch (e) {
         emit(PostError(e.toString()));
       }

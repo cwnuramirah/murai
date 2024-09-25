@@ -115,10 +115,8 @@ class PostRepository {
         }
       ]
     }
-  ]
-''';
+  ]''';
 
-  // Fetch all posts
   Future<List<Post>> getAllPosts() async {
     await Future.delayed(const Duration(seconds: 1));
     final List<dynamic> jsonData = jsonDecode(_mockResponse);
@@ -154,6 +152,8 @@ class PostRepository {
       comments: const [],
     );
 
+    _posts = List<Post>.from(_posts)..insert(0, newPost);
+
     // final response = await http.post(
     //   Uri.parse(apiUrl),
     //   headers: {'Content-Type': 'application/json'},
@@ -166,43 +166,57 @@ class PostRepository {
     return newPost;
   }
 
-  Future<void> updatePost(Post post) async {
-    // final post = _posts.firstWhere((post) => post.postId == post.postId);
+  Future<void> updatePost(Post updatedPost) async {
+    final updatedPostIndex =
+        _posts.indexWhere((post) => post.postId == updatedPost.postId);
+    _posts[updatedPostIndex] = updatedPost;
   }
 
-  // // Like a post by postId and userId
-  // Future<void> likePost(String postId) async {
-  // const String userId = 'current.user';
-  // final post = _posts.firstWhere((post) => post.postId == postId);
+  // Like a post by postId and userId
+  Future<Post> likePost(String postId) async {
+    const String userId = 'current.user';
+    final post = _posts.firstWhere((post) => post.postId == postId);
+    final isLiked = post.likedBy.contains(userId);
 
-  // // Add the userId to the likedBy list if not already liked
-  // if (!post.likedBy.contains(userId)) {
-  //   // You can send a PATCH request to update the 'likedBy' field for a specific post
-  //   final response = await http.patch(
-  //     Uri.parse('$apiUrl/$postId/like'), // Endpoint to like a post
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: jsonEncode({'userId': userId}),
-  //   );
+    // Toggle like/unlike
+    final updatedLikedBy = isLiked
+        ? (Set<String>.from(post.likedBy)..remove(userId))
+        : (Set<String>.from(post.likedBy)..add(userId));
 
-  //   if (response.statusCode != 200) {
-  //     throw Exception('Failed to like post');
-  //   }
-  // } else {
-  //   post.likedBy.remove(userId);
-  // }
-  // }
+    final updatedPost = post.copyWith(likedBy: updatedLikedBy);
+
+    // Add the userId to the likedBy list if not already liked
+    // if (!post.likedBy.contains(userId)) {
+    //   // You can send a PATCH request to update the 'likedBy' field for a specific post
+    //   final response = await http.patch(
+    //     Uri.parse('$apiUrl/$postId/like'), // Endpoint to like a post
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: jsonEncode({'userId': userId}),
+    //   );
+
+    //   if (response.statusCode != 200) {
+    //     throw Exception('Failed to like post');
+    //   }
+    // } else {
+    //   post.likedBy.remove(userId);
+    // }
+    return updatedPost;
+  }
 
   // Add a comment to a post
-  Future<Comment> addComment(String postId, String commentContent) async {
-    final post = _posts.firstWhere((post) => post.postId == postId);
-
-    // Create a new comment object
+  Future<Post> addComment(String postId, String commentContent) async {
     final newComment = Comment(
       userId: 'current.user', // You would replace this with actual user ID
       commentId: DateTime.now().millisecondsSinceEpoch.toString(),
       content: commentContent,
       timestamp: DateTime.now().toUtc().toIso8601String(),
+      replies: const [],
       likedBy: const {},
+    );
+
+    final post = _posts.firstWhere((post) => post.postId == postId);
+    final updatedPost = post.copyWith(
+      comments: List<Comment>.from(post.comments)..add(newComment),
     );
 
     // // Send a POST request to add a comment to the post
@@ -215,6 +229,6 @@ class PostRepository {
     // if (response.statusCode != 201) {
     //   throw Exception('Failed to add comment');
     // }
-    return newComment;
+    return updatedPost;
   }
 }
