@@ -231,4 +231,43 @@ class PostRepository {
     // }
     return updatedPost;
   }
+
+  Future<Post> likeComment(
+    String postId,
+    String commentId,
+    String? replyId,
+  ) async {
+    const String userId = 'current.user';
+    Comment updatedComment;
+
+    // get current comment
+    final post = _posts.firstWhere((post) => post.postId == postId);
+    final comment = post.comments.firstWhere((comment) => comment.commentId == commentId);
+    final commentIndex = post.comments.indexWhere((comment) => comment.commentId == commentId);
+
+    // decide if update comment's or reply's like
+    if (replyId == null) {
+      updatedComment = _updateCommentLike(comment, userId);
+    } else {
+      final replyIndex = comment.replies!.indexWhere((reply) => reply.commentId == replyId);
+      final updatedReply = _updateCommentLike(comment.replies![replyIndex], userId);
+      updatedComment = comment.copyWith(replies: List<Comment>.from(comment.replies!)..[replyIndex] = updatedReply);
+      print(comment.replies![replyIndex].content);
+    }
+
+    final updatedPost = post.copyWith(
+      comments: List<Comment>.from(post.comments)..[commentIndex] = updatedComment
+    );
+
+    return updatedPost;
+  }
+
+  Comment _updateCommentLike(Comment comment, String userId) {
+    final isLiked = comment.likedBy.contains(userId);
+    
+    final updatedLikedBy = isLiked
+        ? (Set<String>.from(comment.likedBy)..remove(userId))
+        : (Set<String>.from(comment.likedBy)..add(userId));
+    return comment.copyWith(likedBy: updatedLikedBy);
+  }
 }

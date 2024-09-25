@@ -26,7 +26,7 @@ class CreatePost extends PostEvent {
 
   const CreatePost({this.content});
 
-    @override
+  @override
   List<Object?> get props => [content];
 }
 
@@ -47,4 +47,15 @@ class AddComment extends PostEvent {
 
   @override
   List<Object?> get props => [postId, comment];
+}
+
+class LikeComment extends PostEvent {
+  final String postId;
+  final String commentId;
+  final String? replyId;
+
+  const LikeComment({required this.postId, required this.commentId, this.replyId});
+
+  @override
+  List<Object?> get props => [postId, commentId];
 }

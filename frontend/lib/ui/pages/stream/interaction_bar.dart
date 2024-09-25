@@ -15,10 +15,9 @@ class InteractionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(
-          width: StyledSize.lg * 4,
+        Expanded(
           child: PostActionButton(
             action: const ['comment', 'comments'],
             onTap: () {},
@@ -27,13 +26,15 @@ class InteractionBar extends StatelessWidget {
           ),
         ),
 
-        PostActionButton(
-          action: const ['like', 'likes'],
-          onTap: () {
-            context.read<PostBloc>().add(LikePost(postId: post.postId));
-          },
-          count: post.likedBy.length,
-          icon: Icons.favorite_border_rounded,
+        Expanded(
+          child: PostActionButton(
+            action: const ['like', 'likes'],
+            onTap: () {
+              context.read<PostBloc>().add(LikePost(postId: post.postId));
+            },
+            count: post.likedBy.length,
+            icon: Icons.favorite_border_rounded,
+          ),
         ),
       ],
     );

@@ -6,12 +6,13 @@ import 'package:frontend/ui/pages/view_post/comment_tile.dart';
 class ViewReply extends StatefulWidget {
   const ViewReply({
     super.key,
-    required this.replies, this.authorId,
+    required this.replies, this.authorId, required this.postId, this.parentCommentId,
   });
 
   final List<Comment> replies;
   final String? authorId;
-
+  final String postId;
+  final String? parentCommentId;
 
   @override
   State<ViewReply> createState() => _ViewReplyState();
@@ -36,7 +37,7 @@ class _ViewReplyState extends State<ViewReply> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: widget.replies.length,
                 itemBuilder: (context, index) {
-                  return CommentTile(comment: widget.replies[index], authorId: widget.authorId,);
+                  return CommentTile(comment: widget.replies[index], authorId: widget.authorId, postId: widget.postId, parentCommentId: widget.parentCommentId,);
                 },
               )
             : const SizedBox.shrink(),

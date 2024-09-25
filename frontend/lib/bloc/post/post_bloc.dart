@@ -14,6 +14,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<CreatePost>(_onCreatePost);
     on<LikePost>(_onLikePost);
     on<AddComment>(_onAddComment);
+    on<LikeComment>(_onLikeComment);
   }
 
   Future<void> _onFetchPosts(FetchPosts event, Emitter<PostState> emit) async {
@@ -60,9 +61,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             updatedPosts.indexWhere((p) => p.postId == event.postId);
         updatedPosts[postIndex] = updatedPost;
 
-        final debug = await postRepository.getPostById(event.postId);
-        print(debug.likedBy.toString());
-
         emit(PostsLoaded(posts: updatedPosts));
       } catch (e) {
         emit(PostError(e.toString()));
@@ -80,6 +78,36 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
         emit(PostUpdatedState(updatedPost));
         await postRepository.updatePost(updatedPost);
+
+        final updatedPosts = List<Post>.from(currentState.posts);
+        final postIndex =
+            updatedPosts.indexWhere((p) => p.postId == event.postId);
+        updatedPosts[postIndex] = updatedPost;
+
+        emit(PostsLoaded(posts: updatedPosts));
+      } catch (e) {
+        emit(PostError(e.toString()));
+      }
+    }
+  }
+
+    Future<void> _onLikeComment(LikeComment event, Emitter<PostState> emit) async {
+    if (state is PostsLoaded) {
+      final currentState = state as PostsLoaded;
+
+      try {
+        final updatedPost = await postRepository.likeComment(event.postId, event.commentId, event.replyId);
+
+        // debug
+        // print(updatedPost.comments.toString());
+
+        emit(PostUpdatedState(updatedPost));
+        await postRepository.updatePost(updatedPost);
+
+        // debug
+        final debug = await postRepository.getPostById(event.postId);
+        print(debug.toString());
+
 
         final updatedPosts = List<Post>.from(currentState.posts);
         final postIndex =

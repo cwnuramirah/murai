@@ -47,6 +47,7 @@ class CommentList extends StatelessWidget {
                   return CommentTile(
                     comment: commentList[index],
                     authorId: authorId,
+                    postId: postId,
                   );
                 },
               )

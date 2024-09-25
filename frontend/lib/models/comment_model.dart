@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 class Comment extends Equatable {
@@ -62,5 +63,25 @@ class Comment extends Equatable {
       'level': level,
       'likedBy': likedBy.toList(),
     };
+  }
+
+  Comment copyWith({
+    String? userId,
+    String? commentId,
+    String? content,
+    String? timestamp,
+    List<Comment>? replies,
+    int? level,
+    Set<String>? likedBy,
+  }) {
+    return Comment(
+      userId: userId ?? this.userId,
+      commentId: commentId ?? this.commentId,
+      content: content ?? this.content,
+      timestamp: timestamp ?? this.timestamp,
+      replies: replies ?? this.replies,
+      level: level ?? this.level,
+      likedBy: likedBy ?? this.likedBy,
+    );
   }
 }
