@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/bloc/post_bloc.dart';
+import 'package:frontend/bloc/post/post_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/models/post_model.dart';
 import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/appbar_button_padding.dart';
 import 'package:frontend/ui/components/btn_no_splash.dart';
@@ -52,15 +51,9 @@ class _NewPostPageState extends State<NewPostPage> {
             child: TextButton(
               onPressed: contentIsNotEmpty || mediaIsNotEmpty
                   ? () {
-                      context.read<PostBloc>().add(AddPost(Post(
-                            username: 'dian.nasar',
-                            userId: 'dnn1309x',
-                            timestamp: DateTime.now().toUtc().toIso8601String(),
-                            postContent: _contentController.text,
-                            replyCount: 0,
-                            likedBy: {},
-                            postId: DateTime.now().toUtc().toIso8601String(),
-                          )));
+                      context
+                          .read<PostBloc>()
+                          .add(CreatePost(content: _contentController.text));
                       Navigator.pop(context);
                     }
                   : null,
@@ -69,7 +62,8 @@ class _NewPostPageState extends State<NewPostPage> {
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: StyledColor.grey,
                   disabledForegroundColor: StyledColor.greyDark,
-                  padding: const EdgeInsets.symmetric(vertical: StyledSize.sm)),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: StyledSize.sm)),
               child: const Text('Post'),
             ),
           )
@@ -115,7 +109,10 @@ class _NewPostPageState extends State<NewPostPage> {
           ),
           Container(
             decoration: const BoxDecoration(border: StyledBorder.greyTop),
-            padding: const EdgeInsets.symmetric(vertical: StyledSize.sm, horizontal: StyledSize.md,),
+            padding: const EdgeInsets.symmetric(
+              vertical: StyledSize.sm,
+              horizontal: StyledSize.md,
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -126,8 +123,8 @@ class _NewPostPageState extends State<NewPostPage> {
                 ),
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
-                    child: Text('|',
-                        style: TextStyle(color: StyledColor.grey))),
+                    child:
+                        Text('|', style: TextStyle(color: StyledColor.grey))),
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},
@@ -135,8 +132,8 @@ class _NewPostPageState extends State<NewPostPage> {
                 ),
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
-                    child: Text('|',
-                        style: TextStyle(color: StyledColor.grey))),
+                    child:
+                        Text('|', style: TextStyle(color: StyledColor.grey))),
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},

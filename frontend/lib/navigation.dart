@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/ui/pages/message_page.dart';
 import 'package:frontend/ui/pages/people_page.dart';
-import 'package:frontend/ui/pages/stream/stream_page.dart';
+import 'package:frontend/ui/pages/stream/feed_page.dart';
 import 'package:frontend/theme.dart';
 
 class Navigation extends StatefulWidget {
@@ -57,7 +57,7 @@ class _NavigationState extends State<Navigation>
         physics: const NeverScrollableScrollPhysics(),
         controller: _controller,
         children: const [
-          StreamPage(),
+          FeedPage(),
           PeoplePage(),
           MessagePage(),
         ],

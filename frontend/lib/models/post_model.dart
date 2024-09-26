@@ -1,77 +1,74 @@
-class Post {
-  final String username;
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
+import 'package:frontend/models/comment_model.dart';
+
+class Post extends Equatable {
   final String userId;
-  final String timestamp;
   final String postId;
   final String? postContent;
-  final int replyCount;
+  final String timestamp;
   final Set<String> likedBy;
+  final List<Comment> comments;
 
   const Post({
-    required this.username,
     required this.userId,
-    required this.timestamp,
     required this.postId,
     this.postContent,
-    required this.replyCount,
+    required this.timestamp,
     required this.likedBy,
+    required this.comments,
   });
 
-  List<Object?> get props => [
-        username,
-        userId,
-        timestamp,
-        postId,
-        postContent,
-        replyCount,
-        likedBy,
-      ];
+  @override
+  List<Object?> get props => [postId, userId, postContent, likedBy, comments];
 
-  Post copyWith({
-    String? username,
-    String? userId,
-    String? timestamp,
-    String? postId,
-    String? postContent,
-    int? replyCount,
-    Set<String>? likedBy,
-  }) {
+  factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      username: username ?? this.username,
-      userId: userId ?? this.userId,
-      timestamp: timestamp ?? this.timestamp,
-      postId: postId ?? this.postId,
-      postContent: postContent ?? this.postContent,
-      replyCount: replyCount ?? this.replyCount,
-      likedBy: likedBy ?? {},
+      userId: json['userId'] as String,
+      postId: json['postId'] as String,
+      postContent:
+          json['postContent'] != null ? json['postContent'] as String : null,
+      timestamp: json['timestamp'] as String,
+      likedBy: json['likedBy'] != null
+          ? Set<String>.from(
+              (json['likedBy'] as List<dynamic>).map((x) => x as String))
+          : {},
+      comments: json['comment'] != null
+          ? List<Comment>.from(
+              (json['comment'] as List<dynamic>).map<Comment>(
+                (x) => Comment.fromJson(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'username': username,
+  Map<String, dynamic> toJson() {
+    return {
       'userId': userId,
-      'timestamp': timestamp,
       'postId': postId,
       'postContent': postContent,
-      'replyCount': replyCount,
+      'timestamp': timestamp,
+      'likedBy': likedBy.toList(),
+      'comment': comments.map((comment) => comment.toJson()).toList(),
     };
   }
 
-  factory Post.fromMap(Map<String, dynamic> map) {
+  Post copyWith({
+    String? userId,
+    String? postId,
+    String? postContent,
+    String? timestamp,
+    Set<String>? likedBy,
+    List<Comment>? comments,
+  }) {
     return Post(
-      username: map['username'] as String,
-      userId: map['userId'] as String,
-      timestamp: map['timestamp'] as String,
-      postId: map['postId'] as String,
-      postContent:
-          map['postContent'] != null ? map['postContent'] as String : null,
-      replyCount: map['replyCount'] as int,
-      likedBy: map['likedBy'] as Set<String>,
+      userId: userId ?? this.userId,
+      postId: postId ?? this.postId,
+      postContent: postContent ?? this.postContent,
+      timestamp: timestamp ?? this.timestamp,
+      likedBy: likedBy ?? this.likedBy,
+      comments: comments ?? this.comments,
     );
   }
-
-  // String toJson() => json.encode(toMap());
-
-  // factory Post.fromJson(String source) => Post.fromMap(json.decode(source) as Map<String, dynamic>);
 }
