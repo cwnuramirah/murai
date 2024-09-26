@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 class Comment extends Equatable {
+=======
+class Comment {
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
   final String userId;
   final String commentId;
   final String content;
@@ -10,7 +14,11 @@ class Comment extends Equatable {
   final int level;
   final Set<String> likedBy;
 
+<<<<<<< HEAD
   const Comment({
+=======
+  Comment({
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
     required this.userId,
     required this.commentId,
     required this.content,
@@ -20,7 +28,10 @@ class Comment extends Equatable {
     required this.likedBy,
   });
 
+<<<<<<< HEAD
   @override
+=======
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
   List<Object?> get props => [
         userId,
         commentId,
@@ -30,6 +41,7 @@ class Comment extends Equatable {
         level,
         likedBy,
       ];
+<<<<<<< HEAD
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
@@ -84,4 +96,6 @@ class Comment extends Equatable {
       likedBy: likedBy ?? this.likedBy,
     );
   }
+=======
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
 }

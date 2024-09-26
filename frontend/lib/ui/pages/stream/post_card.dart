@@ -42,7 +42,11 @@ class _PostCardState extends State<PostCard> {
         child: ContentWrapper(
           leading: const UserAvatar(),
           header: PostCardHeader(
+<<<<<<< HEAD
             username: widget.post.userId,
+=======
+            username: widget.post.username,
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
             timestamp: widget.post.timestamp,
           ),
           body: [

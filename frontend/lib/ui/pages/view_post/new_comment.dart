@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/post/post_bloc.dart';
 import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/utils/comment_input_controller.dart';
+=======
+import 'package:frontend/theme.dart';
+import 'package:frontend/ui/components/user_avatar.dart';
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
 
 class NewComment extends StatefulWidget {
   const NewComment({
     super.key,
     required this.postId,
+<<<<<<< HEAD
     required this.controller,
   });
 
   final String postId;
   final CommentInputController controller;
+=======
+  });
+
+  final String postId;
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
 
   @override
   State<NewComment> createState() => _NewCommentState();
 }
 
 class _NewCommentState extends State<NewComment> {
+<<<<<<< HEAD
   @override
   void initState() {
     super.initState();
@@ -28,19 +40,65 @@ class _NewCommentState extends State<NewComment> {
 
   void _onFocusChange() {
     setState(() {}); // Intentional empty setState to trigger rebuild on focus change
+=======
+  final TextEditingController _commentController = TextEditingController();
+  final FocusNode _commentFocusNode = FocusNode();
+  bool enableTapRegion = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _commentFocusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    setState(
+        () {}); // Empty on purpose. This triggers a rebuild when the focus changes
+  }
+
+  void _focusComment() {
+    if (!enableTapRegion) {
+      // Start detecting any outside tap
+      setState(() {
+        enableTapRegion = true;
+      });
+    }
+  }
+
+  void _unfocusComment() {
+    if (_commentFocusNode.hasFocus) {
+      _commentFocusNode.unfocus();
+    }
+
+    // Stop tracking tap if comment unfocused
+    setState(() {
+      enableTapRegion = false;
+    });
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
   }
 
   @override
   void dispose() {
+<<<<<<< HEAD
     widget.controller.dispose();
+=======
+    _commentController.dispose();
+    _commentFocusNode.removeListener(_onFocusChange);
+    _commentFocusNode.dispose();
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return TapRegion(
+<<<<<<< HEAD
       enabled: widget.controller.enableTapRegion,
       onTapOutside: (event) => widget.controller.unfocusComment(),
+=======
+      enabled: enableTapRegion,
+      onTapOutside: (event) => _unfocusComment(),
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
       child: Container(
         decoration: const BoxDecoration(
           border: StyledBorder.greyTop,
@@ -51,7 +109,11 @@ class _NewCommentState extends State<NewComment> {
         ),
         constraints: StyledTextField.bottomTextFieldHeightConstraint,
         child: Column(
+<<<<<<< HEAD
           crossAxisAlignment: widget.controller.focusNode.hasPrimaryFocus
+=======
+          crossAxisAlignment: _commentFocusNode.hasPrimaryFocus
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
               ? CrossAxisAlignment.start
               : CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -69,6 +131,7 @@ class _NewCommentState extends State<NewComment> {
                   Spacing.horizontal.sm,
                   Expanded(
                     child: TextField(
+<<<<<<< HEAD
                       controller: widget.controller.textController,
                       focusNode: widget.controller.focusNode,
                       autofocus: false,
@@ -83,20 +146,42 @@ class _NewCommentState extends State<NewComment> {
                       maxLines: widget.controller.focusNode.hasPrimaryFocus
                           ? null
                           : 1,
+=======
+                      controller: _commentController,
+                      focusNode: _commentFocusNode,
+                      autofocus: false,
+                      onTap: () => _focusComment(),
+                      maxLength: 200,
+                      decoration: StyledTextField.denseGreyInput.copyWith(
+                        hintText: 'Add comment...',
+                        counter: _commentFocusNode.hasPrimaryFocus
+                            ? null
+                            : const SizedBox.shrink(),
+                      ),
+                      maxLines: _commentFocusNode.hasPrimaryFocus ? null : 1,
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
                     ),
                   ),
                 ],
               ),
             ),
+<<<<<<< HEAD
             widget.controller.focusNode.hasPrimaryFocus
                 ? Spacing.vertical.sm
                 : const SizedBox.shrink(),
             widget.controller.focusNode.hasPrimaryFocus
+=======
+            _commentFocusNode.hasPrimaryFocus
+                ? Spacing.vertical.sm
+                : const SizedBox.shrink(),
+            _commentFocusNode.hasPrimaryFocus
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       GestureDetector(
                         onTap: () {
+<<<<<<< HEAD
                           if (widget.controller.parentCommentId != null) {
                             // if replying to a comment
                             context.read<PostBloc>().add(ReplyComment(
@@ -114,6 +199,9 @@ class _NewCommentState extends State<NewComment> {
                           }
                           widget.controller.unfocusComment();
                           widget.controller.clearComment();
+=======
+                          // _unfocusComment();
+>>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
