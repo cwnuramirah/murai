@@ -51,21 +51,9 @@ class _NewPostPageState extends State<NewPostPage> {
             child: TextButton(
               onPressed: contentIsNotEmpty || mediaIsNotEmpty
                   ? () {
-<<<<<<< HEAD
                       context
                           .read<PostBloc>()
                           .add(CreatePost(content: _contentController.text));
-=======
-                      context.read<PostBloc>().add(AddPost(Post(
-                            username: 'dian.nasar',
-                            userId: 'dnn1309x',
-                            timestamp: DateTime.now().toUtc().toIso8601String(),
-                            postContent: _contentController.text,
-                            replyCount: 0,
-                            likedBy: {},
-                            postId: DateTime.now().toUtc().toIso8601String(),
-                          )));
->>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
                       Navigator.pop(context);
                     }
                   : null,
@@ -121,14 +109,10 @@ class _NewPostPageState extends State<NewPostPage> {
           ),
           Container(
             decoration: const BoxDecoration(border: StyledBorder.greyTop),
-<<<<<<< HEAD
             padding: const EdgeInsets.symmetric(
               vertical: StyledSize.sm,
               horizontal: StyledSize.md,
             ),
-=======
-            padding: const EdgeInsets.symmetric(vertical: StyledSize.sm, horizontal: StyledSize.md,),
->>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -139,13 +123,8 @@ class _NewPostPageState extends State<NewPostPage> {
                 ),
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
-<<<<<<< HEAD
                     child:
                         Text('|', style: TextStyle(color: StyledColor.grey))),
-=======
-                    child: Text('|',
-                        style: TextStyle(color: StyledColor.grey))),
->>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},
@@ -153,13 +132,8 @@ class _NewPostPageState extends State<NewPostPage> {
                 ),
                 const Padding(
                     padding: EdgeInsets.symmetric(horizontal: StyledSize.sm),
-<<<<<<< HEAD
                     child:
                         Text('|', style: TextStyle(color: StyledColor.grey))),
-=======
-                    child: Text('|',
-                        style: TextStyle(color: StyledColor.grey))),
->>>>>>> 4b9d15e999610c99eeea16535c43de26c52234f2
                 NoSplashButton(
                   textColor: StyledColor.blue,
                   onPressed: () {},
