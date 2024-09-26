@@ -3,68 +3,44 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/post/post_bloc.dart';
 import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
+import 'package:frontend/utils/comment_input_controller.dart';
 
 class NewComment extends StatefulWidget {
   const NewComment({
     super.key,
     required this.postId,
+    required this.controller,
   });
 
   final String postId;
+  final CommentInputController controller;
 
   @override
   State<NewComment> createState() => _NewCommentState();
 }
 
 class _NewCommentState extends State<NewComment> {
-  final TextEditingController _commentController = TextEditingController();
-  final FocusNode _commentFocusNode = FocusNode();
-  bool enableTapRegion = false;
-
   @override
   void initState() {
     super.initState();
-    _commentFocusNode.addListener(_onFocusChange);
+    widget.controller.onFocusChangeCallback = _onFocusChange;
   }
 
   void _onFocusChange() {
-    setState(
-        () {}); // Empty on purpose. This triggers a rebuild when the focus changes
-  }
-
-  void _focusComment() {
-    if (!enableTapRegion) {
-      // Start detecting any outside tap
-      setState(() {
-        enableTapRegion = true;
-      });
-    }
-  }
-
-  void _unfocusComment() {
-    if (_commentFocusNode.hasFocus) {
-      _commentFocusNode.unfocus();
-    }
-
-    // Stop tracking tap if comment unfocused
-    setState(() {
-      enableTapRegion = false;
-    });
+    setState(() {}); // Empty setState to trigger rebuild on focus change
   }
 
   @override
   void dispose() {
-    _commentController.dispose();
-    _commentFocusNode.removeListener(_onFocusChange);
-    _commentFocusNode.dispose();
+    widget.controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return TapRegion(
-      enabled: enableTapRegion,
-      onTapOutside: (event) => _unfocusComment(),
+      enabled: widget.controller.enableTapRegion,
+      onTapOutside: (event) => widget.controller.unfocusComment(),
       child: Container(
         decoration: const BoxDecoration(
           border: StyledBorder.greyTop,
@@ -75,7 +51,7 @@ class _NewCommentState extends State<NewComment> {
         ),
         constraints: StyledTextField.bottomTextFieldHeightConstraint,
         child: Column(
-          crossAxisAlignment: _commentFocusNode.hasPrimaryFocus
+          crossAxisAlignment: widget.controller.focusNode.hasPrimaryFocus
               ? CrossAxisAlignment.start
               : CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -93,35 +69,51 @@ class _NewCommentState extends State<NewComment> {
                   Spacing.horizontal.sm,
                   Expanded(
                     child: TextField(
-                      controller: _commentController,
-                      focusNode: _commentFocusNode,
+                      controller: widget.controller.textController,
+                      focusNode: widget.controller.focusNode,
                       autofocus: false,
-                      onTap: () => _focusComment(),
+                      onTap: () => widget.controller.focusComment(),
                       maxLength: 200,
                       decoration: StyledTextField.denseGreyInput.copyWith(
                         hintText: 'Add comment...',
-                        counter: _commentFocusNode.hasPrimaryFocus
+                        counter: widget.controller.focusNode.hasPrimaryFocus
                             ? null
                             : const SizedBox.shrink(),
                       ),
-                      maxLines: _commentFocusNode.hasPrimaryFocus ? null : 1,
+                      maxLines: widget.controller.focusNode.hasPrimaryFocus
+                          ? null
+                          : 1,
                     ),
                   ),
                 ],
               ),
             ),
-            _commentFocusNode.hasPrimaryFocus
+            widget.controller.focusNode.hasPrimaryFocus
                 ? Spacing.vertical.sm
                 : const SizedBox.shrink(),
-            _commentFocusNode.hasPrimaryFocus
+            widget.controller.focusNode.hasPrimaryFocus
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       GestureDetector(
                         onTap: () {
-                          context.read<PostBloc>().add(AddComment(postId: widget.postId, comment: _commentController.text));
-                          _unfocusComment();
-                          _commentController.clear();
+                          if (widget.controller.parentCommentId != null) {
+                            // If replying to a comment
+                            context.read<PostBloc>().add(ReplyComment(
+                                  postId: widget.postId,
+                                  reply: widget.controller.textController.text,
+                                  parentCommentId:
+                                      widget.controller.parentCommentId!,
+                                ));
+                          } else {
+                            // Regular comment
+                            context.read<PostBloc>().add(AddComment(
+                                postId: widget.postId,
+                                comment:
+                                    widget.controller.textController.text));
+                          }
+                          widget.controller.unfocusComment();
+                          widget.controller.clearComment();
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

@@ -8,6 +8,7 @@ import 'package:frontend/ui/components/content_wrapper.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/ui/pages/view_post/comment_list.dart';
 import 'package:frontend/ui/pages/view_post/new_comment.dart';
+import 'package:frontend/utils/comment_input_controller.dart';
 import 'package:frontend/utils/timestamp.dart';
 
 class ViewPostPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class ViewPostPage extends StatefulWidget {
 }
 
 class _ViewPostPageState extends State<ViewPostPage> {
+  final CommentInputController _commentController = CommentInputController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,75 +34,90 @@ class _ViewPostPageState extends State<ViewPostPage> {
       body: CustomScrollView(
         slivers: [
           MainPost(post: widget.post),
-          BlocBuilder<PostBloc, PostState>(
-            buildWhen: (previous, current) {
-              if (current is PostUpdatedState &&
-                  current.post.postId == widget.post.postId) {
-                return true;
-              }
-              return false;
-            },
-            builder: (context, state) {
-              Post updatedPost = widget.post;
-              if (state is PostUpdatedState &&
-                  state.post.postId == widget.post.postId) {
-                updatedPost = state.post;
-              }
-              return SliverAppBar(
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(border: StyledBorder.greyTop),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: StyledSize.md,
-                    horizontal: StyledSize.lg,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${updatedPost.comments.length} ${updatedPost.comments.length < 2 ? 'reply' : 'replies'}',
-                        style: StyledText.title.sm,
-                      ),
-                      NoSplashButton(
-                        onPressed: () {
-                          context
-                              .read<PostBloc>()
-                              .add(LikePost(postId: updatedPost.postId));
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(Icons.favorite_outline_rounded),
-                            Spacing.horizontal.xs,
-                            Text('${updatedPost.likedBy.length}')
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                automaticallyImplyLeading: false,
-                foregroundColor: StyledColor.black,
-                backgroundColor: StyledColor.white,
-                pinned: true,
-                elevation: 1,
-                shadowColor: StyledColor.grey,
-              );
-            },
-          ),
+          MainPostInteraction(post: widget.post),
           // TODO: optimize author parameter
           CommentList(
             postId: widget.post.postId,
             authorId: widget.post.userId,
             commentList: widget.post.comments,
+            commentController: _commentController,
           ),
           // TODO: refactor height below bottomsheet
           SliverToBoxAdapter(
             child: SizedBox(
-                height:
-                    StyledTextField.bottomTextFieldHeightConstraint.minHeight),
+                height: StyledTextField.bottomTextFieldHeightConstraint.minHeight),
           ),
         ],
       ),
-      bottomSheet: NewComment(postId: widget.post.postId),
+      bottomSheet: NewComment(
+        postId: widget.post.postId,
+        controller: _commentController,
+      ),
+    );
+  }
+}
+
+class MainPostInteraction extends StatelessWidget {
+  const MainPostInteraction({
+    super.key,
+    required this.post,
+  });
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PostBloc, PostState>(
+      buildWhen: (previous, current) {
+        if (current is PostUpdatedState && current.post.postId == post.postId) {
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        Post updatedPost = post;
+        if (state is PostUpdatedState && state.post.postId == post.postId) {
+          updatedPost = state.post;
+        }
+        return SliverAppBar(
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(border: StyledBorder.greyTop),
+            padding: const EdgeInsets.symmetric(
+              vertical: StyledSize.md,
+              horizontal: StyledSize.lg,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${updatedPost.comments.length} ${updatedPost.comments.length < 2 ? 'reply' : 'replies'}',
+                  style: StyledText.title.sm,
+                ),
+                NoSplashButton(
+                  onPressed: () {
+                    context
+                        .read<PostBloc>()
+                        .add(LikePost(postId: updatedPost.postId));
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(Icons.favorite_outline_rounded),
+                      Spacing.horizontal.xs,
+                      Text('${updatedPost.likedBy.length}')
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          automaticallyImplyLeading: false,
+          foregroundColor: StyledColor.black,
+          backgroundColor: StyledColor.white,
+          pinned: true,
+          elevation: 1,
+          shadowColor: StyledColor.grey,
+        );
+      },
     );
   }
 }

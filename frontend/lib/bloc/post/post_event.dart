@@ -49,12 +49,24 @@ class AddComment extends PostEvent {
   List<Object?> get props => [postId, comment];
 }
 
+class ReplyComment extends PostEvent {
+  final String postId;
+  final String reply;
+  final String parentCommentId;
+
+  const ReplyComment({required this.postId, required this.reply, required this.parentCommentId});
+
+  @override
+  List<Object?> get props => [postId, reply, parentCommentId];
+}
+
 class LikeComment extends PostEvent {
   final String postId;
   final String commentId;
   final String? replyId;
 
-  const LikeComment({required this.postId, required this.commentId, this.replyId});
+  const LikeComment(
+      {required this.postId, required this.commentId, this.replyId});
 
   @override
   List<Object?> get props => [postId, commentId];

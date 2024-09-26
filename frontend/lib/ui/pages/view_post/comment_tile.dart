@@ -6,6 +6,7 @@ import 'package:frontend/theme.dart';
 import 'package:frontend/ui/components/content_wrapper.dart';
 import 'package:frontend/ui/components/user_avatar.dart';
 import 'package:frontend/ui/pages/view_post/view_reply.dart';
+import 'package:frontend/utils/comment_input_controller.dart';
 import 'package:frontend/utils/timestamp.dart';
 
 class CommentTile extends StatelessWidget {
@@ -14,12 +15,13 @@ class CommentTile extends StatelessWidget {
     required this.comment,
     this.authorId,
     required this.postId,
-    this.parentCommentId,
+    this.parentCommentId, required this.commentController,
   });
   final String postId;
   final Comment comment;
   final String? parentCommentId;
   final String? authorId;
+  final CommentInputController commentController;
 
   bool _checkAuthor() {
     var isAuthor = false;
@@ -66,50 +68,29 @@ class CommentTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Reply button
-                    const Text(
-                      'Reply',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: StyledColor.greyDark,
+                    GestureDetector(
+                      onTap: () {
+                        // if replying to comment
+                        if (parentCommentId == null) {
+                          commentController.focusComment(parentId: comment.commentId);
+                        } else {
+                          // if replying to reply
+                          commentController.focusComment(parentId: parentCommentId!);
+                        }
+
+                      },
+                      child: const Text(
+                        'Reply',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: StyledColor.greyDark,
+                        ),
                       ),
                     ),
-                    // Like reply button
-                    BlocBuilder<PostBloc, PostState>(
-                      builder: (context, state) {
-                        int commentLikeCount = comment.likedBy.length;
-                        if (state is PostUpdatedState &&
-                            state.post.postId == postId) {
-                          commentLikeCount = state.post.likedBy.length;
-                        }
-                        return Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                if (parentCommentId == null && comment.level == 0) {
-                                  context.read<PostBloc>().add(LikeComment(
-                                      postId: postId,
-                                      commentId: comment.commentId));
-                                } else {
-                                  context.read<PostBloc>().add(LikeComment(
-                                      postId: postId,
-                                      commentId: parentCommentId!,
-                                      replyId: comment.commentId));
-                                }
-                              },
-                              child: const Icon(
-                                Icons.favorite_outline_outlined,
-                                size: 16.0,
-                              ),
-                            ),
-                            Spacing.horizontal.xs,
-                            SizedBox(
-                              width: StyledSize.grid * 5,
-                              child: Text('$commentLikeCount'),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                    LikeCommentButton(
+                        comment: comment,
+                        postId: postId,
+                        parentCommentId: parentCommentId),
                   ],
                 ),
               ),
@@ -124,9 +105,61 @@ class CommentTile extends StatelessWidget {
                 authorId: authorId,
                 postId: postId,
                 parentCommentId: comment.commentId,
+                commentController: commentController,
               )
             : const SizedBox.shrink(),
       ),
+    );
+  }
+}
+
+class LikeCommentButton extends StatelessWidget {
+  const LikeCommentButton({
+    super.key,
+    required this.comment,
+    required this.postId,
+    required this.parentCommentId,
+  });
+
+  final Comment comment;
+  final String postId;
+  final String? parentCommentId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PostBloc, PostState>(
+      builder: (context, state) {
+        int commentLikeCount = comment.likedBy.length;
+        if (state is PostUpdatedState && state.post.postId == postId) {
+          commentLikeCount = state.post.likedBy.length;
+        }
+        return Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                if (parentCommentId == null && comment.level == 0) {
+                  context.read<PostBloc>().add(LikeComment(
+                      postId: postId, commentId: comment.commentId));
+                } else {
+                  context.read<PostBloc>().add(LikeComment(
+                      postId: postId,
+                      commentId: parentCommentId!,
+                      replyId: comment.commentId));
+                }
+              },
+              child: const Icon(
+                Icons.favorite_outline_outlined,
+                size: 16.0,
+              ),
+            ),
+            Spacing.horizontal.xs,
+            SizedBox(
+              width: StyledSize.grid * 5,
+              child: Text('$commentLikeCount'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

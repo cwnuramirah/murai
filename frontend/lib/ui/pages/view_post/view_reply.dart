@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/comment_model.dart';
 import 'package:frontend/theme.dart';
 import 'package:frontend/ui/pages/view_post/comment_tile.dart';
+import 'package:frontend/utils/comment_input_controller.dart';
 
 class ViewReply extends StatefulWidget {
   const ViewReply({
     super.key,
-    required this.replies, this.authorId, required this.postId, this.parentCommentId,
+    required this.replies,
+    this.authorId,
+    required this.postId,
+    this.parentCommentId,
+    required this.commentController,
   });
 
   final List<Comment> replies;
   final String? authorId;
   final String postId;
   final String? parentCommentId;
+  final CommentInputController commentController;
 
   @override
   State<ViewReply> createState() => _ViewReplyState();
@@ -37,7 +43,13 @@ class _ViewReplyState extends State<ViewReply> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: widget.replies.length,
                 itemBuilder: (context, index) {
-                  return CommentTile(comment: widget.replies[index], authorId: widget.authorId, postId: widget.postId, parentCommentId: widget.parentCommentId,);
+                  return CommentTile(
+                    comment: widget.replies[index],
+                    authorId: widget.authorId,
+                    postId: widget.postId,
+                    parentCommentId: widget.parentCommentId,
+                    commentController: widget.commentController,
+                  );
                 },
               )
             : const SizedBox.shrink(),
@@ -53,7 +65,8 @@ class _ViewReplyState extends State<ViewReply> {
                 ? GestureDetector(
                     onTap: () => _setExpandReplies(),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: StyledSize.sm),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: StyledSize.sm),
                       child: Row(
                         children: [
                           const Text(
@@ -75,7 +88,8 @@ class _ViewReplyState extends State<ViewReply> {
                 : GestureDetector(
                     onTap: () => _setExpandReplies(),
                     child: Padding(
-                      padding:  const EdgeInsets.symmetric(horizontal: StyledSize.sm),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: StyledSize.sm),
                       child: Row(
                         children: [
                           Text(

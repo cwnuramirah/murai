@@ -232,6 +232,41 @@ class PostRepository {
     return updatedPost;
   }
 
+    Future<Post> replyComment(String postId, String commentContent, String parentCommentId) async {
+    final newReply = Comment(
+      userId: 'current.user', // You would replace this with actual user ID
+      commentId: DateTime.now().millisecondsSinceEpoch.toString(),
+      content: commentContent,
+      timestamp: DateTime.now().toUtc().toIso8601String(),
+      level: 1,
+      replies: const [],
+      likedBy: const {},
+    );
+
+    final post = _posts.firstWhere((post) => post.postId == postId);
+    final comment = post.comments.firstWhere((comment) => comment.commentId == parentCommentId);
+    final commentIndex = post.comments.indexWhere((comment) => comment.commentId == parentCommentId);
+
+
+    final  updatedComment = comment.copyWith(replies: List<Comment>.from(comment.replies!)..add(newReply));
+
+    final updatedPost = post.copyWith(
+      comments: List<Comment>.from(post.comments)..[commentIndex] = updatedComment,
+    );
+
+    // // Send a POST request to add a comment to the post
+    // final response = await http.post(
+    //   Uri.parse('$apiUrl/$postId/comments'), // Endpoint to add a comment
+    //   headers: {'Content-Type': 'application/json'},
+    //   body: jsonEncode(commentData),
+    // );
+
+    // if (response.statusCode != 201) {
+    //   throw Exception('Failed to add comment');
+    // }
+    return updatedPost;
+  }
+
   Future<Post> likeComment(
     String postId,
     String commentId,
@@ -252,7 +287,6 @@ class PostRepository {
       final replyIndex = comment.replies!.indexWhere((reply) => reply.commentId == replyId);
       final updatedReply = _updateCommentLike(comment.replies![replyIndex], userId);
       updatedComment = comment.copyWith(replies: List<Comment>.from(comment.replies!)..[replyIndex] = updatedReply);
-      print(comment.replies![replyIndex].content);
     }
 
     final updatedPost = post.copyWith(
