@@ -27,7 +27,7 @@ class _NewCommentState extends State<NewComment> {
   }
 
   void _onFocusChange() {
-    setState(() {}); // Empty setState to trigger rebuild on focus change
+    setState(() {}); // Intentional empty setState to trigger rebuild on focus change
   }
 
   @override
@@ -75,7 +75,7 @@ class _NewCommentState extends State<NewComment> {
                       onTap: () => widget.controller.focusComment(),
                       maxLength: 200,
                       decoration: StyledTextField.denseGreyInput.copyWith(
-                        hintText: 'Add comment...',
+                        hintText: widget.controller.parentCommentId != null ? 'Add reply...' : 'Add comment...',
                         counter: widget.controller.focusNode.hasPrimaryFocus
                             ? null
                             : const SizedBox.shrink(),
@@ -98,7 +98,7 @@ class _NewCommentState extends State<NewComment> {
                       GestureDetector(
                         onTap: () {
                           if (widget.controller.parentCommentId != null) {
-                            // If replying to a comment
+                            // if replying to a comment
                             context.read<PostBloc>().add(ReplyComment(
                                   postId: widget.postId,
                                   reply: widget.controller.textController.text,
@@ -106,7 +106,7 @@ class _NewCommentState extends State<NewComment> {
                                       widget.controller.parentCommentId!,
                                 ));
                           } else {
-                            // Regular comment
+                            // add regular comment
                             context.read<PostBloc>().add(AddComment(
                                 postId: widget.postId,
                                 comment:

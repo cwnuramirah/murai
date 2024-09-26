@@ -10,6 +10,7 @@ import 'package:frontend/utils/comment_input_controller.dart';
 import 'package:frontend/utils/timestamp.dart';
 
 class CommentTile extends StatelessWidget {
+  /// UI for Comment & Reply
   const CommentTile({
     super.key,
     required this.comment,
@@ -19,7 +20,9 @@ class CommentTile extends StatelessWidget {
   });
   final String postId;
   final Comment comment;
+  /// A reply must pass this argument. Useful to handle events related to the reply to the comment.
   final String? parentCommentId;
+  /// To display author tag if the commenter is the author of the main post
   final String? authorId;
   final CommentInputController commentController;
 
@@ -77,7 +80,6 @@ class CommentTile extends StatelessWidget {
                           // if replying to reply
                           commentController.focusComment(parentId: parentCommentId!);
                         }
-
                       },
                       child: const Text(
                         'Reply',
@@ -123,6 +125,7 @@ class LikeCommentButton extends StatelessWidget {
 
   final Comment comment;
   final String postId;
+  /// To use when liking a reply to comment.
   final String? parentCommentId;
 
   @override

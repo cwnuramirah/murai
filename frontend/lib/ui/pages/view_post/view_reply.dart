@@ -5,6 +5,7 @@ import 'package:frontend/ui/pages/view_post/comment_tile.dart';
 import 'package:frontend/utils/comment_input_controller.dart';
 
 class ViewReply extends StatefulWidget {
+  /// View replies of a comment
   const ViewReply({
     super.key,
     required this.replies,

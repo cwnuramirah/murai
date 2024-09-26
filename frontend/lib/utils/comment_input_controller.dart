@@ -19,7 +19,7 @@ class CommentInputController {
   }
 
   void focusComment({String? parentId}) {
-    parentCommentId = parentId; // Store parent comment ID if replying
+    parentCommentId = parentId;
     enableTapRegion = true;
     focusNode.requestFocus();
   }
@@ -29,7 +29,7 @@ class CommentInputController {
       focusNode.unfocus();
     }
     enableTapRegion = false;
-    parentCommentId = null; // Reset after unfocusing
+    parentCommentId = null;
   }
 
   void clearComment() {
